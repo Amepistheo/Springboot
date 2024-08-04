@@ -1,8 +1,9 @@
 package hellojpa;
 
-import jakarta.persistence.*;
-
-import java.util.List;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
 
 public class JpaMain {
 
@@ -15,17 +16,13 @@ public class JpaMain {
         tx.begin();
 
         try {
-
-            // 비영속
-            Member member = new Member();
-            member.setId(100L);
-            member.setName("HelloJPA");
-
             // 영속
-            System.out.println("=== BEFORE ===");
-            em.persist(member);
-            em.detach(member);
-            System.out.println("=== AFTER ===");
+            Member member = em.find(Member.class, 150L);
+            member.setName("ZZZZZ");
+
+            if (member.getName().equals("ZZZZZ")) {
+                em.persist(member);
+            }
 
             tx.commit();
         } catch (Exception e) {
