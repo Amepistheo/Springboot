@@ -17,12 +17,22 @@ public class JpaMain {
 
         try {
             // 영속
-            Member member = new Member();
-            member.setId(3L);
-            member.setUsername("C");
-            member.setRoleType(RoleType.GUEST);
+            Member member1 = new Member();
+            member1.setUsername("A");
 
-            em.persist(member);
+            Member member2 = new Member();
+            member2.setUsername("B");
+
+            Member member3 = new Member();
+            member3.setUsername("C");
+
+            em.persist(member1);
+            em.persist(member2);
+            em.persist(member3);
+
+            System.out.println("member.id = " + member1.getId());
+            System.out.println("member.id = " + member2.getId());
+            System.out.println("member.id = " + member3.getId());
 
             tx.commit();
         } catch (Exception e) {
