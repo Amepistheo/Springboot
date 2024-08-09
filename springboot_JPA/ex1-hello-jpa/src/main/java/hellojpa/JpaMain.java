@@ -1,7 +1,9 @@
 package hellojpa;
 
-import jakarta.persistence.*;
-import org.hibernate.Hibernate;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
 
 public class JpaMain {
 
@@ -14,24 +16,23 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
+            Parent parent = new Parent();
 
-            Member member1 = new Member();
-            member1.setName("member1");
-            em.persist(member1);
+            Child child1 = new Child();
+            Child child2 = new Child();
+
+            parent.addChild(child1);
+            parent.addChild(child2);
+
+            em.persist(parent);
+            em.persist(child1);
+            em.persist(child2);
 
             em.flush();
             em.clear();
 
-            Member m = em.find(Member.class, member1.getId());
-
-            System.out.println("m = " + m.getTeam().getClass());
-
-            System.out.println("================");
-            System.out.println("teamName = " + m.getTeam().getName());
-            System.out.println("================");
+            Parent findParent = em.find(Parent.class, parent.getId());
+            findParent.getChildList().remove(0);
 
             tx.commit();
         } catch (Exception e) {
