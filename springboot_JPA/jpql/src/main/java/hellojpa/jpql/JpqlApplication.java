@@ -8,7 +8,6 @@ import java.util.List;
 
 @SpringBootApplication
 public class JpqlApplication {
-
 	public static void main(String[] args) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPQL");
 		EntityManager em = emf.createEntityManager();
@@ -43,22 +42,15 @@ public class JpqlApplication {
 			em.flush();
 			em.clear();
 
-			String query = "select t From Team t";
+			String query = "select m From Member m where m.team = :team";
 
-			List<Team> result = em.createQuery(query, Team.class)
-					.setFirstResult(0)
-					.setMaxResults(2)
+			List<Member> members = em.createQuery(query, Member.class)
+					.setParameter("team", teamA)
 					.getResultList();
 
-			System.out.println("result = " + result.size());
+			System.out.println("members = " + members);
 
-			for (Team team : result) {
-				System.out.println("team = " + team.getName() + "| members = " + team.getMembers().size());
-
-				for (Member member : team.getMembers()) {
-					System.out.println("-> member = " + member);
-				}
-			}
+			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();
 			e.printStackTrace();
@@ -70,5 +62,4 @@ public class JpqlApplication {
 
 		SpringApplication.run(JpqlApplication.class, args);
 	}
-
 }
