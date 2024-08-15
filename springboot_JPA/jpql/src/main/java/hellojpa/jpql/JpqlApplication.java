@@ -43,9 +43,12 @@ public class JpqlApplication {
 			em.flush();
 			em.clear();
 
-			String query = "select distinct m From Member m join fetch m.team";
+			String query = "select t From Team t";
 
-			List<Team> result = em.createQuery(query, Team.class).getResultList();
+			List<Team> result = em.createQuery(query, Team.class)
+					.setFirstResult(0)
+					.setMaxResults(2)
+					.getResultList();
 
 			System.out.println("result = " + result.size());
 
